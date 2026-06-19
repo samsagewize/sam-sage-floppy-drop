@@ -317,6 +317,15 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
         installed = true;
       }
+      document.addEventListener('click', function(event) {
+        if (event.target && event.target.id === 'sam_profile_button') {
+          event.preventDefault();
+          var root = document.querySelector('.sc-host > div') || document.body;
+          var modal = makeModal(root);
+          renderLibrary(modal);
+          modal.classList.add('is-open');
+        }
+      });
       var tries = 0;
       var timer = setInterval(function(){ enhance(); if (installed || ++tries > 30) clearInterval(timer); }, 150);
     })();
