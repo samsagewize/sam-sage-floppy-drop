@@ -193,13 +193,15 @@ document.addEventListener('DOMContentLoaded', async function() {
           '.sam-profile-btn{position:absolute;right:104px;top:8px;cursor:pointer;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-weight:600;font-size:12px;color:#eef0f4;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);padding:7px 13px;border-radius:16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);margin-right:8px}' +
           '.sam-profile-modal{position:absolute;inset:0;z-index:40;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(4,6,10,.72);backdrop-filter:blur(6px);font-family:Helvetica Neue,Helvetica,Arial,sans-serif;color:#eef0f4}' +
           '.sam-profile-modal.is-open{display:flex}' +
+          '.sam-profile-modal.is-page{align-items:stretch;justify-content:center;padding:0;background:radial-gradient(120% 80% at 50% 12%,#1a2436 0%,#10121a 46%,#0a0b0f 100%)}' +
           '.sam-profile-card{width:100%;max-width:400px;border-radius:18px;overflow:hidden;background:rgba(20,23,30,.94);border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 70px rgba(0,0,0,.72),0 0 50px rgba(10,132,255,.2)}' +
+          '.sam-profile-modal.is-page .sam-profile-card{max-width:760px;height:100%;border-radius:0;border-top:none;border-bottom:none}.sam-profile-modal.is-page .sam-profile-body{max-height:none;height:calc(100% - 45px)}' +
           '.sam-profile-head{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.1);font-weight:700;font-size:13px}' +
           '.sam-profile-close{cursor:pointer;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eef0f4}' +
           '.sam-profile-body{padding:22px;max-height:min(76vh,680px);overflow:auto}.sam-profile-input{width:100%;height:44px;margin-bottom:10px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(8,10,14,.72);color:#eef0f4;padding:0 13px;font:14px Helvetica Neue,Helvetica,Arial,sans-serif;outline:none;box-sizing:border-box}.sam-profile-input.sam-profile-description{height:70px;resize:none;padding-top:11px}' +
           '.sam-profile-buy,.sam-album-action{cursor:pointer;width:100%;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-weight:700;font-size:15px;color:#fff;background:linear-gradient(180deg,#7fc0ff,#1f93ff 8%,#0a84ff 50%,#0066d6 52%,#3a9bff);border:1px solid #064a9e;padding:14px 18px;border-radius:22px;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 0 24px rgba(10,132,255,.35)}' +
           '.sam-album-secondary{cursor:pointer;width:100%;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-weight:700;font-size:14px;color:#eef0f4;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);padding:12px 16px;border-radius:20px}' +
-          '.sam-profile-section{margin-bottom:14px;padding:14px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(8,10,14,.42)}.sam-profile-title{font-size:11px;color:#7d828d;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}.sam-profile-save{cursor:pointer;width:100%;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-weight:700;font-size:13px;color:#eef0f4;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);padding:11px 12px;border-radius:18px}.sam-activity-row{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid rgba(255,255,255,.08);font-size:12px;color:#c8ced8}.sam-activity-dot{width:8px;height:8px;border-radius:50%;background:#0a84ff;margin-top:4px;box-shadow:0 0 12px rgba(10,132,255,.75);flex:none}.sam-activity-time{font-size:10px;color:#6f7582;margin-top:2px}' +
+          '.sam-profile-hero{display:flex;gap:14px;align-items:center;margin-bottom:12px}.sam-profile-avatar{width:76px;height:76px;flex:none;border-radius:18px;object-fit:cover;background:#0b0d13;border:1px solid rgba(255,255,255,.14);box-shadow:0 12px 28px rgba(0,0,0,.48)}.sam-profile-section{margin-bottom:14px;padding:14px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(8,10,14,.42)}.sam-profile-title{font-size:11px;color:#7d828d;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}.sam-profile-save{cursor:pointer;width:100%;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-weight:700;font-size:13px;color:#eef0f4;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);padding:11px 12px;border-radius:18px}.sam-activity-row{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid rgba(255,255,255,.08);font-size:12px;color:#c8ced8}.sam-activity-dot{width:8px;height:8px;border-radius:50%;background:#0a84ff;margin-top:4px;box-shadow:0 0 12px rgba(10,132,255,.75);flex:none}.sam-activity-time{font-size:10px;color:#6f7582;margin-top:2px}' +
           '.sam-admin-tools{display:none;gap:8px;margin-bottom:14px;padding:12px;border:1px solid rgba(127,192,255,.22);border-radius:14px;background:rgba(10,132,255,.08)}.sam-admin-label{font-size:11px;color:#7fc0ff;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.sam-admin-button{cursor:pointer;width:100%;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-weight:700;font-size:13px;color:#eef0f4;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);padding:11px 12px;border-radius:18px}' +
           '.sam-owned-album{margin-top:14px;padding:14px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(8,10,14,.55)}.sam-seal-badge{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;background:rgba(10,132,255,.16);border:1px solid rgba(10,132,255,.35);color:#7fc0ff;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.sam-track-row{display:grid;gap:8px;padding:11px 0;border-top:1px solid rgba(255,255,255,.08)}.sam-track-row audio{width:100%;height:34px;filter:invert(1) hue-rotate(180deg);opacity:.9}' +
           '@keyframes samSealBurst{0%{transform:scale(.82) rotate(-3deg);opacity:0;filter:blur(4px)}45%{transform:scale(1.06) rotate(2deg);opacity:1;filter:blur(0)}100%{transform:scale(1) rotate(0);opacity:1}}@keyframes samSpark{0%,100%{transform:translateY(0) scale(.8);opacity:.35}50%{transform:translateY(-8px) scale(1.1);opacity:1}}.sam-open-celebration{position:relative;overflow:hidden;text-align:center;padding:22px 16px;border-radius:14px;background:radial-gradient(circle at 50% 10%,rgba(127,192,255,.24),rgba(8,10,14,.7) 58%);border:1px solid rgba(127,192,255,.22);animation:samSealBurst .72s cubic-bezier(.2,.8,.2,1)}.sam-open-celebration:before,.sam-open-celebration:after{content:"";position:absolute;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle,rgba(127,192,255,.75),transparent 65%);animation:samSpark 1s ease-in-out infinite}.sam-open-celebration:before{left:18px;top:18px}.sam-open-celebration:after{right:18px;bottom:18px;animation-delay:.18s}.sam-open-title{position:relative;font-weight:800;font-size:28px;letter-spacing:-.03em;color:#fff;text-shadow:0 0 22px rgba(10,132,255,.65)}.sam-open-sub{position:relative;margin-top:7px;font-size:12px;color:#aab0bb}';
@@ -247,9 +249,11 @@ document.addEventListener('DOMContentLoaded', async function() {
       function saveProfile(modal) {
         var name = modal.querySelector('.sam-profile-name');
         var description = modal.querySelector('.sam-profile-description');
+        var image = modal.querySelector('.sam-profile-image');
         localStorage.setItem(profileKey, JSON.stringify({
           name: name && name.value ? name.value.trim() : 'SAM SAGE Collector',
-          description: description && description.value ? description.value.trim() : 'Collecting Sessions album assets.'
+          description: description && description.value ? description.value.trim() : 'Collecting Sessions album assets.',
+          image: image && image.value ? image.value.trim() : art
         }));
         addActivity('Updated profile info');
         renderLibrary(modal);
@@ -284,8 +288,18 @@ document.addEventListener('DOMContentLoaded', async function() {
       function openProfileModal() {
         var root = document.querySelector('.sc-host > div') || document.body;
         var modal = makeModal(root);
+        modal.classList.remove('is-page');
         renderLibrary(modal);
         modal.classList.add('is-open');
+        return modal;
+      }
+      function openProfilePage() {
+        var root = document.querySelector('.sc-host > div') || document.body;
+        var modal = makeModal(root);
+        modal.classList.add('is-page');
+        renderLibrary(modal);
+        modal.classList.add('is-open');
+        location.hash = 'profile';
         return modal;
       }
       function playTrack(index, container) {
@@ -321,10 +335,14 @@ document.addEventListener('DOMContentLoaded', async function() {
         var profile = profileData();
         var name = modal.querySelector('.sam-profile-name');
         var description = modal.querySelector('.sam-profile-description');
+        var image = modal.querySelector('.sam-profile-image');
+        var avatar = modal.querySelector('.sam-profile-avatar');
         if (!library || !purchase) return;
         if (admin) admin.style.display = adminMode() ? 'grid' : 'none';
         if (name && document.activeElement !== name) name.value = profile.name || 'SAM SAGE Collector';
         if (description && document.activeElement !== description) description.value = profile.description || 'Collecting Sessions album assets.';
+        if (image && document.activeElement !== image) image.value = profile.image || art;
+        if (avatar) avatar.src = profile.image || art;
         renderActivity(modal);
         var state = albumState();
         purchase.style.display = state === 'not-owned' ? 'block' : 'none';
@@ -342,7 +360,11 @@ document.addEventListener('DOMContentLoaded', async function() {
             addActivity('Opened Sessions #' + albumNumber());
             setTimeout(function() { setAlbumState('opened'); renderLibrary(modal); }, 1450);
           });
-          body.querySelector('.sam-album-secondary').addEventListener('click', function() { setAlbumState('sealed'); addActivity('Kept Sessions #' + albumNumber() + ' sealed'); renderLibrary(modal); });
+          body.querySelector('.sam-album-secondary').addEventListener('click', function() {
+            setAlbumState('sealed');
+            addActivity('Kept Sessions #' + albumNumber() + ' sealed');
+            openProfilePage();
+          });
           return;
         }
         body.innerHTML = '<div style="font-size:12px;color:#8b909c;margin-bottom:8px">Play the opened copy from your profile.</div>' + albumTracks.map(function(track, index) {
@@ -358,9 +380,14 @@ document.addEventListener('DOMContentLoaded', async function() {
         var modal = document.createElement('div');
         modal.id = 'sam_profile_modal';
         modal.className = 'sam-profile-modal';
-        modal.innerHTML = '<div class="sam-profile-card"><div class="sam-profile-head"><span>Profile</span><button class="sam-profile-close" type="button">x</button></div><div class="sam-profile-body"><div class="sam-admin-tools"><div class="sam-admin-label">Admin preview</div><button class="sam-admin-button" type="button">Show sealed album in my profile</button></div><div class="sam-profile-section"><div class="sam-profile-title">Profile info</div><input class="sam-profile-input sam-profile-name" placeholder="Display name"><textarea class="sam-profile-input sam-profile-description" placeholder="Profile description"></textarea><button class="sam-profile-save" type="button">Save profile</button></div><div class="sam-profile-purchase"><div style="display:flex;gap:13px;align-items:center;margin-bottom:18px"><div style="width:58px;height:58px;flex:none;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 26px rgba(0,0,0,.45)"><img src="' + art + '" alt="SAM SAGE album art" style="width:100%;height:100%;object-fit:cover;display:block"></div><div style="min-width:0"><div style="font-size:12px;color:#8b909c">Create profile to buy</div><div style="font-weight:700;font-size:26px;letter-spacing:-.03em;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Sessions</div></div></div><input class="sam-profile-input" placeholder="Email for receipt"><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:14px"><div><div style="font-size:11px;color:#7d828d">DIGITAL ALBUM</div><div style="font-weight:700;font-size:17px;color:#eef0f4">SAM SAGE - Sessions</div></div><div style="font-weight:700;font-size:26px;color:#0a84ff">$9</div></div><button class="sam-profile-buy" type="button">Create profile + buy album</button><div class="sam-profile-note" style="font-size:11px;line-height:1.4;color:#7d828d;margin-top:12px;text-align:center">After checkout, Sessions will appear here as Sealed.</div></div><div class="sam-profile-section"><div class="sam-profile-title">Assets</div><div class="sam-profile-library"></div></div><div class="sam-profile-section"><div class="sam-profile-title">Activity</div><div class="sam-profile-activity"></div></div></div></div>';
+        modal.innerHTML = '<div class="sam-profile-card"><div class="sam-profile-head"><span>My Profile</span><button class="sam-profile-close" type="button">x</button></div><div class="sam-profile-body"><div class="sam-admin-tools"><div class="sam-admin-label">Admin preview</div><button class="sam-admin-button" type="button">Show sealed album in my profile</button></div><div class="sam-profile-section"><div class="sam-profile-title">Profile</div><div class="sam-profile-hero"><img class="sam-profile-avatar" alt="Profile picture"><div style="min-width:0;flex:1"><input class="sam-profile-input sam-profile-name" placeholder="Display name"><input class="sam-profile-input sam-profile-image" placeholder="Profile picture URL"></div></div><textarea class="sam-profile-input sam-profile-description" placeholder="Bio / description"></textarea><button class="sam-profile-save" type="button">Save profile</button></div><div class="sam-profile-purchase"><div style="display:flex;gap:13px;align-items:center;margin-bottom:18px"><div style="width:58px;height:58px;flex:none;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 26px rgba(0,0,0,.45)"><img src="' + art + '" alt="SAM SAGE album art" style="width:100%;height:100%;object-fit:cover;display:block"></div><div style="min-width:0"><div style="font-size:12px;color:#8b909c">Create profile to buy</div><div style="font-weight:700;font-size:26px;letter-spacing:-.03em;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Sessions</div></div></div><input class="sam-profile-input" placeholder="Email for receipt"><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:14px"><div><div style="font-size:11px;color:#7d828d">DIGITAL ALBUM</div><div style="font-weight:700;font-size:17px;color:#eef0f4">SAM SAGE - Sessions</div></div><div style="font-weight:700;font-size:26px;color:#0a84ff">$9</div></div><button class="sam-profile-buy" type="button">Create profile + buy album</button><div class="sam-profile-note" style="font-size:11px;line-height:1.4;color:#7d828d;margin-top:12px;text-align:center">After checkout, Sessions will appear here as Sealed.</div></div><div class="sam-profile-section"><div class="sam-profile-title">Assets</div><div class="sam-profile-library"></div></div><div class="sam-profile-section"><div class="sam-profile-title">Activity</div><div class="sam-profile-activity"></div></div></div></div>';
         root.appendChild(modal);
-        modal.addEventListener('click', function(e) { if (e.target === modal || e.target.className === 'sam-profile-close') modal.classList.remove('is-open'); });
+        modal.addEventListener('click', function(e) {
+          if (e.target === modal || e.target.className === 'sam-profile-close') {
+            modal.classList.remove('is-open', 'is-page');
+            if (location.hash === '#profile') history.replaceState(null, '', location.pathname + location.search);
+          }
+        });
         modal.querySelector('.sam-profile-save').addEventListener('click', function() {
           saveProfile(modal);
         });
@@ -396,7 +423,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           btn.type = 'button';
           btn.className = 'sam-profile-btn';
           btn.textContent = 'Profile';
-          btn.addEventListener('click', function(){ openProfileModal(); });
+          btn.addEventListener('click', function(){ openProfilePage(); });
           dealer.parentNode.insertBefore(btn, dealer);
         }
         var label = divByText('SIDE A · 1.44 MB');
@@ -414,19 +441,20 @@ document.addEventListener('DOMContentLoaded', async function() {
       document.addEventListener('click', function(event) {
         if (event.target && event.target.id === 'sam_profile_button') {
           event.preventDefault();
-          openProfileModal();
+          openProfilePage();
         }
         if (event.target && event.target.textContent && event.target.textContent.trim() === 'Open ▸') {
           event.preventDefault();
           event.stopPropagation();
           event.stopImmediatePropagation();
-          var modal = openProfileModal();
+          var modal = openProfilePage();
           var note = modal.querySelector('.sam-profile-note');
           if (albumState() === 'not-owned' && note) note.textContent = 'Buy Sessions first, then your sealed copy will appear here to open.';
         }
       }, true);
       var tries = 0;
       var timer = setInterval(function(){ enhance(); if (installed || ++tries > 30) clearInterval(timer); }, 150);
+      setTimeout(function() { if (location.hash === '#profile') openProfilePage(); }, 900);
     })();
   } catch (err) {
     setStatus('Error unpacking: ' + err.message);
