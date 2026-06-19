@@ -165,6 +165,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       var checkoutUrl = 'https://buy.stripe.com/4gMdRac4baKk7pC2qwgMw00';
       var albumKey = 'sam_sage_sessions_album_state';
       var albumNumberKey = 'sam_sage_sessions_album_number';
+      var adminKey = 'sam_sage_sessions_admin';
       var player = new Audio();
       var currentTrack = -1;
       var activeTrack = -1;
@@ -196,6 +197,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           '.sam-profile-body{padding:22px}.sam-profile-input{width:100%;height:44px;margin-bottom:10px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(8,10,14,.72);color:#eef0f4;padding:0 13px;font:14px Helvetica Neue,Helvetica,Arial,sans-serif;outline:none;box-sizing:border-box}' +
           '.sam-profile-buy,.sam-album-action{cursor:pointer;width:100%;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-weight:700;font-size:15px;color:#fff;background:linear-gradient(180deg,#7fc0ff,#1f93ff 8%,#0a84ff 50%,#0066d6 52%,#3a9bff);border:1px solid #064a9e;padding:14px 18px;border-radius:22px;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 0 24px rgba(10,132,255,.35)}' +
           '.sam-album-secondary{cursor:pointer;width:100%;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-weight:700;font-size:14px;color:#eef0f4;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);padding:12px 16px;border-radius:20px}' +
+          '.sam-admin-tools{display:none;gap:8px;margin-bottom:14px;padding:12px;border:1px solid rgba(127,192,255,.22);border-radius:14px;background:rgba(10,132,255,.08)}.sam-admin-label{font-size:11px;color:#7fc0ff;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.sam-admin-button{cursor:pointer;width:100%;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-weight:700;font-size:13px;color:#eef0f4;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);padding:11px 12px;border-radius:18px}' +
           '.sam-owned-album{margin-top:14px;padding:14px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(8,10,14,.55)}.sam-seal-badge{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;background:rgba(10,132,255,.16);border:1px solid rgba(10,132,255,.35);color:#7fc0ff;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.sam-track-row{display:grid;gap:8px;padding:11px 0;border-top:1px solid rgba(255,255,255,.08)}.sam-track-row audio{width:100%;height:34px;filter:invert(1) hue-rotate(180deg);opacity:.9}' +
           '@keyframes samSealBurst{0%{transform:scale(.82) rotate(-3deg);opacity:0;filter:blur(4px)}45%{transform:scale(1.06) rotate(2deg);opacity:1;filter:blur(0)}100%{transform:scale(1) rotate(0);opacity:1}}@keyframes samSpark{0%,100%{transform:translateY(0) scale(.8);opacity:.35}50%{transform:translateY(-8px) scale(1.1);opacity:1}}.sam-open-celebration{position:relative;overflow:hidden;text-align:center;padding:22px 16px;border-radius:14px;background:radial-gradient(circle at 50% 10%,rgba(127,192,255,.24),rgba(8,10,14,.7) 58%);border:1px solid rgba(127,192,255,.22);animation:samSealBurst .72s cubic-bezier(.2,.8,.2,1)}.sam-open-celebration:before,.sam-open-celebration:after{content:"";position:absolute;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle,rgba(127,192,255,.75),transparent 65%);animation:samSpark 1s ease-in-out infinite}.sam-open-celebration:before{left:18px;top:18px}.sam-open-celebration:after{right:18px;bottom:18px;animation-delay:.18s}.sam-open-title{position:relative;font-weight:800;font-size:28px;letter-spacing:-.03em;color:#fff;text-shadow:0 0 22px rgba(10,132,255,.65)}.sam-open-sub{position:relative;margin-top:7px;font-size:12px;color:#aab0bb}';
         document.head.appendChild(style);
@@ -226,6 +228,10 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
       function albumState() {
         return localStorage.getItem(albumKey) || 'not-owned';
+      }
+      function adminMode() {
+        if (new URLSearchParams(window.location.search).get('admin') === '1') localStorage.setItem(adminKey, '1');
+        return localStorage.getItem(adminKey) === '1';
       }
       function albumNumber() {
         return localStorage.getItem(albumNumberKey) || '1';
@@ -262,7 +268,9 @@ document.addEventListener('DOMContentLoaded', async function() {
       function renderLibrary(modal) {
         var library = modal.querySelector('.sam-profile-library');
         var purchase = modal.querySelector('.sam-profile-purchase');
+        var admin = modal.querySelector('.sam-admin-tools');
         if (!library || !purchase) return;
+        if (admin) admin.style.display = adminMode() ? 'grid' : 'none';
         var state = albumState();
         purchase.style.display = state === 'not-owned' ? 'block' : 'none';
         if (state === 'not-owned') {
@@ -294,9 +302,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         var modal = document.createElement('div');
         modal.id = 'sam_profile_modal';
         modal.className = 'sam-profile-modal';
-        modal.innerHTML = '<div class="sam-profile-card"><div class="sam-profile-head"><span>Profile</span><button class="sam-profile-close" type="button">x</button></div><div class="sam-profile-body"><div class="sam-profile-purchase"><div style="display:flex;gap:13px;align-items:center;margin-bottom:18px"><div style="width:58px;height:58px;flex:none;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 26px rgba(0,0,0,.45)"><img src="' + art + '" alt="SAM SAGE album art" style="width:100%;height:100%;object-fit:cover;display:block"></div><div style="min-width:0"><div style="font-size:12px;color:#8b909c">Create profile to buy</div><div style="font-weight:700;font-size:26px;letter-spacing:-.03em;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Sessions</div></div></div><input class="sam-profile-input" placeholder="Display name"><input class="sam-profile-input" placeholder="Email for receipt"><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:14px"><div><div style="font-size:11px;color:#7d828d">DIGITAL ALBUM</div><div style="font-weight:700;font-size:17px;color:#eef0f4">SAM SAGE - Sessions</div></div><div style="font-weight:700;font-size:26px;color:#0a84ff">$9</div></div><button class="sam-profile-buy" type="button">Create profile + buy album</button><div class="sam-profile-note" style="font-size:11px;line-height:1.4;color:#7d828d;margin-top:12px;text-align:center">After checkout, Sessions will appear here as Sealed.</div></div><div class="sam-profile-library"></div></div></div>';
+        modal.innerHTML = '<div class="sam-profile-card"><div class="sam-profile-head"><span>Profile</span><button class="sam-profile-close" type="button">x</button></div><div class="sam-profile-body"><div class="sam-admin-tools"><div class="sam-admin-label">Admin preview</div><button class="sam-admin-button" type="button">Show sealed album in my profile</button></div><div class="sam-profile-purchase"><div style="display:flex;gap:13px;align-items:center;margin-bottom:18px"><div style="width:58px;height:58px;flex:none;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 26px rgba(0,0,0,.45)"><img src="' + art + '" alt="SAM SAGE album art" style="width:100%;height:100%;object-fit:cover;display:block"></div><div style="min-width:0"><div style="font-size:12px;color:#8b909c">Create profile to buy</div><div style="font-weight:700;font-size:26px;letter-spacing:-.03em;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Sessions</div></div></div><input class="sam-profile-input" placeholder="Display name"><input class="sam-profile-input" placeholder="Email for receipt"><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:14px"><div><div style="font-size:11px;color:#7d828d">DIGITAL ALBUM</div><div style="font-weight:700;font-size:17px;color:#eef0f4">SAM SAGE - Sessions</div></div><div style="font-weight:700;font-size:26px;color:#0a84ff">$9</div></div><button class="sam-profile-buy" type="button">Create profile + buy album</button><div class="sam-profile-note" style="font-size:11px;line-height:1.4;color:#7d828d;margin-top:12px;text-align:center">After checkout, Sessions will appear here as Sealed.</div></div><div class="sam-profile-library"></div></div></div>';
         root.appendChild(modal);
         modal.addEventListener('click', function(e) { if (e.target === modal || e.target.className === 'sam-profile-close') modal.classList.remove('is-open'); });
+        modal.querySelector('.sam-admin-button').addEventListener('click', function() {
+          setAlbumState('sealed');
+          renderLibrary(modal);
+        });
         modal.querySelector('.sam-profile-buy').addEventListener('click', function() {
           setAlbumState('sealed');
           renderLibrary(modal);
