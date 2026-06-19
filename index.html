@@ -163,6 +163,23 @@ document.addEventListener('DOMContentLoaded', async function() {
     (function installSamSageEnhancements() {
       var art = 'assets/sam-sage-art.jpeg';
       var checkoutUrl = 'https://buy.stripe.com/4gMdRac4baKk7pC2qwgMw00';
+      var albumKey = 'sam_sage_sessions_album_state';
+      var player = new Audio();
+      var currentTrack = -1;
+      var activeTrack = -1;
+      player.addEventListener('ended', function() {
+        activeTrack = -1;
+        var modal = document.getElementById('sam_profile_modal');
+        if (modal) renderLibrary(modal);
+      });
+      var albumTracks = [
+        { title: 'Flor', file: 'assets/music/FLOR MASTER 1.wav' },
+        { title: 'Quasimodo', file: 'assets/music/5. Quasimodo SAM SAGE YUNGBRATZ MAS 1_1.wav' },
+        { title: 'Corazon En La Mesa', file: 'assets/music/6. SAm Sage x corazon en la mesa j mendez.wav' },
+        { title: 'Triste Interlude', file: 'assets/music/7. SAm Sage x Triste Interlude Mastr.wav' },
+        { title: 'Sushi Roll', file: 'assets/music/SAm Sage x SUSHI ROLL van joel_2.wav' },
+        { title: 'Mucho Flow En La Disco', file: 'assets/music/SAm Sage x Yungbratz Mucho flow En la Disco_1 COPY_1.wav' }
+      ];
       var installed = false;
       function css() {
         if (document.getElementById('sam_sage_profile_css')) return;
@@ -176,7 +193,9 @@ document.addEventListener('DOMContentLoaded', async function() {
           '.sam-profile-head{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.1);font-weight:700;font-size:13px}' +
           '.sam-profile-close{cursor:pointer;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#eef0f4}' +
           '.sam-profile-body{padding:22px}.sam-profile-input{width:100%;height:44px;margin-bottom:10px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(8,10,14,.72);color:#eef0f4;padding:0 13px;font:14px Helvetica Neue,Helvetica,Arial,sans-serif;outline:none;box-sizing:border-box}' +
-          '.sam-profile-buy{cursor:pointer;width:100%;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-weight:700;font-size:15px;color:#fff;background:linear-gradient(180deg,#7fc0ff,#1f93ff 8%,#0a84ff 50%,#0066d6 52%,#3a9bff);border:1px solid #064a9e;padding:14px 18px;border-radius:22px;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 0 24px rgba(10,132,255,.35)}';
+          '.sam-profile-buy,.sam-album-action{cursor:pointer;width:100%;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-weight:700;font-size:15px;color:#fff;background:linear-gradient(180deg,#7fc0ff,#1f93ff 8%,#0a84ff 50%,#0066d6 52%,#3a9bff);border:1px solid #064a9e;padding:14px 18px;border-radius:22px;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 0 24px rgba(10,132,255,.35)}' +
+          '.sam-album-secondary{cursor:pointer;width:100%;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-weight:700;font-size:14px;color:#eef0f4;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);padding:12px 16px;border-radius:20px}' +
+          '.sam-owned-album{margin-top:14px;padding:14px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(8,10,14,.55)}.sam-seal-badge{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;background:rgba(10,132,255,.16);border:1px solid rgba(10,132,255,.35);color:#7fc0ff;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.sam-track-row{display:grid;gap:8px;padding:11px 0;border-top:1px solid rgba(255,255,255,.08)}.sam-track-row audio{width:100%;height:34px;filter:invert(1) hue-rotate(180deg);opacity:.9}';
         document.head.appendChild(style);
       }
       function buttonByText(text) {
@@ -203,15 +222,64 @@ document.addEventListener('DOMContentLoaded', async function() {
         box.style.position = 'relative';
         if (!small) box.style.textShadow = '0 3px 18px rgba(0,0,0,.85)';
       }
+      function albumState() {
+        return localStorage.getItem(albumKey) || 'not-owned';
+      }
+      function setAlbumState(state) {
+        localStorage.setItem(albumKey, state);
+      }
+      function playTrack(index, container) {
+        var track = albumTracks[index];
+        if (!track) return;
+        if (activeTrack === index) {
+          player.pause();
+          activeTrack = -1;
+        } else {
+          currentTrack = index;
+          activeTrack = index;
+          player.src = track.file;
+          player.play().catch(function() { activeTrack = -1; renderLibrary(container); });
+        }
+        renderLibrary(container);
+      }
+      function renderLibrary(modal) {
+        var library = modal.querySelector('.sam-profile-library');
+        var purchase = modal.querySelector('.sam-profile-purchase');
+        if (!library || !purchase) return;
+        var state = albumState();
+        purchase.style.display = state === 'not-owned' ? 'block' : 'none';
+        if (state === 'not-owned') {
+          library.innerHTML = '';
+          return;
+        }
+        var opened = state === 'opened';
+        library.innerHTML = '<div class="sam-owned-album"><div style="display:flex;gap:13px;align-items:center;margin-bottom:13px"><div style="width:54px;height:54px;flex:none;border-radius:13px;background-image:linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.72)),url(' + art + ');background-size:cover;background-position:center;border:1px solid rgba(255,255,255,.12)"></div><div style="min-width:0;flex:1"><div style="font-size:12px;color:#8b909c">Your album</div><div style="font-weight:700;font-size:22px;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Sessions</div></div><span class="sam-seal-badge">' + (opened ? 'Opened' : 'Sealed') + '</span></div><div class="sam-library-body"></div></div>';
+        var body = library.querySelector('.sam-library-body');
+        if (!opened) {
+          body.innerHTML = '<div style="font-size:12px;line-height:1.45;color:#8b909c;margin-bottom:12px">This copy is sealed in your profile. Open it whenever you are ready to hear the songs, or keep it sealed.</div><div style="display:grid;gap:9px"><button class="sam-album-action" type="button">Open to hear songs</button><button class="sam-album-secondary" type="button">Keep sealed</button></div>';
+          body.querySelector('.sam-album-action').addEventListener('click', function() { setAlbumState('opened'); renderLibrary(modal); });
+          body.querySelector('.sam-album-secondary').addEventListener('click', function() { setAlbumState('sealed'); renderLibrary(modal); });
+          return;
+        }
+        body.innerHTML = '<div style="font-size:12px;color:#8b909c;margin-bottom:8px">Play the opened copy from your profile.</div>' + albumTracks.map(function(track, index) {
+          return '<div class="sam-track-row"><div style="min-width:0"><div style="font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (index + 1) + '. ' + track.title + '</div><div style="font-size:11px;color:#7d828d">Sessions</div></div><audio controls preload="metadata" src="' + track.file + '"></audio></div>';
+        }).join('');
+      }
       function makeModal(root) {
-        if (document.getElementById('sam_profile_modal')) return document.getElementById('sam_profile_modal');
+        if (document.getElementById('sam_profile_modal')) {
+          var existing = document.getElementById('sam_profile_modal');
+          renderLibrary(existing);
+          return existing;
+        }
         var modal = document.createElement('div');
         modal.id = 'sam_profile_modal';
         modal.className = 'sam-profile-modal';
-        modal.innerHTML = '<div class="sam-profile-card"><div class="sam-profile-head"><span>Profile</span><button class="sam-profile-close" type="button">x</button></div><div class="sam-profile-body"><div style="display:flex;gap:13px;align-items:center;margin-bottom:18px"><div style="width:58px;height:58px;flex:none;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 26px rgba(0,0,0,.45)"><img src="' + art + '" alt="SAM SAGE album art" style="width:100%;height:100%;object-fit:cover;display:block"></div><div style="min-width:0"><div style="font-size:12px;color:#8b909c">Create profile to buy</div><div style="font-weight:700;font-size:26px;letter-spacing:-.03em;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Sessions</div></div></div><input class="sam-profile-input" placeholder="Display name"><input class="sam-profile-input" placeholder="Email for receipt"><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:14px"><div><div style="font-size:11px;color:#7d828d">DIGITAL ALBUM</div><div style="font-weight:700;font-size:17px;color:#eef0f4">SAM SAGE - Sessions</div></div><div style="font-weight:700;font-size:26px;color:#0a84ff">$9</div></div><button class="sam-profile-buy" type="button">Create profile + buy album</button><div class="sam-profile-note" style="font-size:11px;line-height:1.4;color:#7d828d;margin-top:12px;text-align:center">This demo keeps the profile on this page until you connect checkout.</div></div></div>';
+        modal.innerHTML = '<div class="sam-profile-card"><div class="sam-profile-head"><span>Profile</span><button class="sam-profile-close" type="button">x</button></div><div class="sam-profile-body"><div class="sam-profile-purchase"><div style="display:flex;gap:13px;align-items:center;margin-bottom:18px"><div style="width:58px;height:58px;flex:none;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 26px rgba(0,0,0,.45)"><img src="' + art + '" alt="SAM SAGE album art" style="width:100%;height:100%;object-fit:cover;display:block"></div><div style="min-width:0"><div style="font-size:12px;color:#8b909c">Create profile to buy</div><div style="font-weight:700;font-size:26px;letter-spacing:-.03em;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Sessions</div></div></div><input class="sam-profile-input" placeholder="Display name"><input class="sam-profile-input" placeholder="Email for receipt"><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:14px"><div><div style="font-size:11px;color:#7d828d">DIGITAL ALBUM</div><div style="font-weight:700;font-size:17px;color:#eef0f4">SAM SAGE - Sessions</div></div><div style="font-weight:700;font-size:26px;color:#0a84ff">$9</div></div><button class="sam-profile-buy" type="button">Create profile + buy album</button><div class="sam-profile-note" style="font-size:11px;line-height:1.4;color:#7d828d;margin-top:12px;text-align:center">After checkout, Sessions will appear here as Sealed.</div></div><div class="sam-profile-library"></div></div></div>';
         root.appendChild(modal);
         modal.addEventListener('click', function(e) { if (e.target === modal || e.target.className === 'sam-profile-close') modal.classList.remove('is-open'); });
         modal.querySelector('.sam-profile-buy').addEventListener('click', function() {
+          setAlbumState('sealed');
+          renderLibrary(modal);
           if (checkoutUrl && checkoutUrl.indexOf('https://') === 0) {
             window.location.href = checkoutUrl;
             return;
@@ -219,6 +287,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           this.textContent = 'Profile ready - add checkout link';
           modal.querySelector('.sam-profile-note').textContent = 'Paste your Stripe Payment Link into checkoutUrl in index.html to start taking card payments.';
         });
+        renderLibrary(modal);
         return modal;
       }
       function enhance() {
@@ -233,7 +302,7 @@ document.addEventListener('DOMContentLoaded', async function() {
           btn.type = 'button';
           btn.className = 'sam-profile-btn';
           btn.textContent = 'Profile';
-          btn.addEventListener('click', function(){ modal.classList.add('is-open'); });
+          btn.addEventListener('click', function(){ renderLibrary(modal); modal.classList.add('is-open'); });
           dealer.parentNode.insertBefore(btn, dealer);
         }
         var label = divByText('SIDE A · 1.44 MB');
